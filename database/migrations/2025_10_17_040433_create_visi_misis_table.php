@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('visi_misis', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('visi');
-            $table->longText('misi')->default('')->change();
-            $table->longText('tujuan')->default('')->change();
+            $table->longText('misi')->nullable();
+            $table->longText('tujuan')->nullable();
             $table->string('motto');
             $table->longText('sejarah')->nullable();
             $table->timestamps();

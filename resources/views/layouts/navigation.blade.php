@@ -24,6 +24,12 @@
                     <x-nav-link :href="route('visiMisi.index')" :active="request()->routeIs('visiMisi.*')">
                         {{ __('Visi Misi') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('teacher.index')" :active="request()->routeIs('teacher.*')">
+                        {{ __('Teachers') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.*')">
+                        {{ __('Blogs') }}
+                    </x-nav-link>
                 </div>
             </div>
 

@@ -76,8 +76,8 @@
                          <!-- Content Block Right -->
                          <div class="jos relative" data-jos_animation="fade-left">
                              <!-- Content Image -->
-                             <img src="assets/img/th-2/content-img-2.png" alt="content-img-2" width="451"
-                                 height="456" class="h-auto w-full" />
+                             <img src="{{ asset('school.gif') }}" alt="content-img-2" width="451" height="456"
+                                 class="h-auto w-full" />
                          </div>
                          <!-- Content Block Right -->
                      </div>

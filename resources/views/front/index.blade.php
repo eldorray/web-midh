@@ -15,154 +15,11 @@
             <!--...::: Visi misi Section End :::... -->
 
             <!--...::: Video Section Start :::... -->
-            <section class="section-video">
-                <!-- Section Space -->
-                <div class="section-space-bottom">
-                    <!-- Section Container -->
-                    <div class="container-default">
-                        <!-- Section Content Wrapper -->
-                        <div class="jos mb-[60px] xl:mb-20">
-                            <!-- Section Content Block -->
-                            <div class="mx-auto max-w-[636px]">
-                                <h2 class="mb-5 text-center">
-                                    Develop a communication strategy with live video chat
-                                </h2>
-                                <p class="text-center">
-                                    Video conferencing boosts productivity & overall promotes
-                                    collaboration. The advantage of video conferencing is the
-                                    ability to facilitate all of those.
-                                </p>
-                            </div>
-                            <!-- Section Content Block -->
-                        </div>
-                        <!-- Section Content Wrapper -->
-
-                        <!-- Video Block -->
-                        <div class="jos">
-                            <div class="relative flex items-center justify-center">
-                                <img src="assets/img/th-2/video-img.jpg" alt="video-img" width="1295" height="699"
-                                    class="h-auto w-full" />
-                                <a data-fslightbox="gallery" href="https://www.youtube.com/watch?v=3nQNiWdeH2Q"
-                                    class="group group absolute flex h-20 w-20 items-center justify-center rounded-[50%] bg-white text-ColorPurple xl:h-[120px] xl:w-[120px]"
-                                    aria-label="video-play">
-                                    <span
-                                        class="text-2xl transition-all duration-300 ease-linear group-hover:scale-110"><i
-                                            class="fa-solid fa-play"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                        <!-- Video Block -->
-                    </div>
-                    <!-- Section Container -->
-                </div>
-                <!-- Section Space -->
-            </section>
+            @include('front.video')
             <!--...::: Video Section End :::... -->
 
             <!--...::: Testimonial Section Start :::... -->
-            <section class="section-testimonial">
-                <!-- Section Background -->
-                <div class="bg-ColorPurple/5">
-                    <!-- Section Space -->
-                    <div class="section-space">
-                        <!-- Section Container -->
-                        <div class="container-default">
-                            <!-- Section Content Wrapper -->
-                            <div class="jos mb-[60px] xl:mb-20">
-                                <!-- Section Content Block -->
-                                <div class="mx-auto max-w-[636px]">
-                                    <h2 class="text-center">
-                                        Trusted by millions of worldwide customers
-                                    </h2>
-                                </div>
-                                <!-- Section Content Block -->
-                            </div>
-                            <!-- Section Content Wrapper -->
-
-                            <!-- Testimonial List -->
-                            <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-20">
-                                <!-- Testimonial Item -->
-                                <div class="jos flex flex-col items-center justify-center text-center"
-                                    data-jos_animation="fade-right" data-jos_delay="0">
-                                    <!-- Review Star -->
-                                    <div class="mb-5 flex gap-[7px] text-2xl text-[#00B67A] lg:mb-[30px]">
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                    </div>
-                                    <p class="text-ColorBlack">
-                                        “This was definitely my best experience with live chat
-                                        software. Plug and play. Intuitive. It is fast, clean,
-                                        amazing.”
-                                    </p>
-                                    <div class="font mt-auto text-base font-semibold text-[#6B6F7B]">
-                                        <span class="text-ColorBlack">Rated 4.5/5 - </span>from
-                                        over 100 reviews
-                                    </div>
-                                </div>
-                                <!-- Testimonial Item -->
-                                <!-- Testimonial Item -->
-                                <div class="jos flex flex-col items-center justify-center text-center"
-                                    data-jos_animation="fade-right" data-jos_delay="0.3">
-                                    <!-- Review Star -->
-                                    <div class="mb-5 flex gap-[7px] text-2xl text-[#00B67A] lg:mb-[30px]">
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                    </div>
-                                    <p class="text-ColorBlack">
-                                        “Excellent simple live chat solution that has provided my
-                                        company with a direct way to communicate with potential
-                                        for customers through my website.”
-                                    </p>
-                                    <div class="font mt-auto text-base font-semibold text-[#6B6F7B]">
-                                        <span class="text-ColorBlack">Rated 4.5/5 - </span>from
-                                        over 100 reviews
-                                    </div>
-                                </div>
-                                <!-- Testimonial Item -->
-                                <!-- Testimonial Item -->
-                                <div class="jos flex flex-col items-center justify-center text-center"
-                                    data-jos_animation="fade-right" data-jos_delay="0.6">
-                                    <!-- Review Star -->
-                                    <div class="mb-5 flex gap-[7px] text-2xl text-[#00B67A] lg:mb-[30px]">
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                    </div>
-                                    <p class="text-ColorBlack">
-                                        Great customer support! Easy to use, cool user interface.
-                                        With Chaport you will find all you need. Really recommend
-                                        to all use this amazine tool.”
-                                    </p>
-                                    <div class="font mt-auto text-base font-semibold text-[#6B6F7B]">
-                                        <span class="text-ColorBlack">Rated 4.5/5 - </span>from
-                                        over 100 reviews
-                                    </div>
-                                </div>
-                                <!-- Testimonial Item -->
-                            </div>
-                            <!-- Testimonial List -->
-
-                            <div class="jos flex justify-center">
-                                <a href="#"
-                                    class="btn is-purple btn-animation is-large mt-10 inline-block rounded lg:mt-20"><span>Read
-                                        all the reviews on
-                                        <strong class="underline underline-offset-4">Trustpilot.com</strong></span></a>
-                            </div>
-                        </div>
-                        <!-- Section Container -->
-                    </div>
-                    <!-- Section Space -->
-                </div>
-                <!-- Section Background -->
-            </section>
+            @include('front.blog')
             <!--...::: Testimonial Section End :::... -->
 
             <!-- Horizontal Text Slider -->
@@ -170,101 +27,22 @@
                 class="overflow-hidden bg-ColorBlack py-5 text-3xl font-bold uppercase leading-[1.4] tracking-widest text-white">
                 <!-- Horizontal Slider Block-->
                 <div class="horizontal-slide-from-right-to-left flex gap-x-[30px]">
-                    <span class="inline-block min-w-[855px]">We complete client's projects efficiently</span>
+                    <span class="inline-block min-w-[855px]">MI Daarul Hikmah</span>
                     <img src="assets/img/icons/fire-icon.png" alt="fire-icon" width="40" height="40" />
-                    <span class="inline-block min-w-[855px]">We complete client's projects efficiently</span>
+                    <span class="inline-block min-w-[855px]">Open PPDB 2026-2027</span>
                     <img src="assets/img/icons/fire-icon.png" alt="fire-icon" width="40" height="40" />
-                    <span class="inline-block min-w-[855px]">We complete client's projects efficiently</span>
+                    <span class="inline-block min-w-[855px]">Daftarkan Segera Putra-putri anda</span>
                     <img src="assets/img/icons/fire-icon.png" alt="fire-icon" width="40" height="40" />
-                    <span class="inline-block min-w-[855px]">We complete client's projects efficiently</span>
+                    <span class="inline-block min-w-[855px]">Jangan Sampai Ketinggalan</span>
                     <img src="assets/img/icons/fire-icon.png" alt="fire-icon" width="40" height="40" />
                 </div>
                 <!-- Horizontal Slider Block-->
             </div>
             <!-- Horizontal Text Slider -->
 
-            <!--...::: Pricing Section Start :::... -->
-            <section class="section-pricing">
-                <!-- Section Background -->
-                <div class="bg-ColorPurple/5">
-                    <!-- Section Space -->
-                    <div class="section-space">
-                        <!-- Section Container -->
-                        <div class="container-default">
-                            <!-- Section Content Wrapper -->
-                            <div class="jos">
-                                <!-- Section Content Block -->
-                                <div class="mx-auto max-w-[600px]">
-                                    <div class="mb-5">
-                                        <h2
-                                            class="text-center text-3xl font-extrabold leading-[1.33] -tracking-[1px] lg:text-4xl">
-                                            Our Professional Teachers
-                                        </h2>
-                                    </div>
-                                </div>
-                                <!-- Section Content Block -->
-                            </div>
-                            <!-- Section Content Wrapper -->
-
-                            <!-- Pricing Area -->
-                            <div>
-
-                                <!-- Pricing List -->
-
-                                <!-- Team List -->
-                                <div class="grid gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-                                    <!-- Team Item -->
-                                    <div class="jos flex flex-col items-center justify-center rounded-[10px] bg-white p-5 text-center shadow-[0_4px_80px_0_rgba(0,0,0,0.08)]"
-                                        data-jos_animation="flip-left">
-                                        <img src="assets/img/th-1/team-img-5.jpg" alt="team-img-5" width="266"
-                                            height="250" class="h-auto w-full rounded-[10px] lg:w-auto" />
-                                        <div class="mb-4 mt-6">
-                                            <div class="mb-1 text-xl font-semibold text-ColorBlack">
-                                                Arlene McCoy
-                                            </div>
-                                            <span class="block text-opacity-80">UI/UX Designer</span>
-                                        </div>
-
-                                        <div class="flex flex-wrap gap-[10px] xl:gap-4">
-                                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-                                                class="flex h-[35px] w-[35px] items-center justify-center rounded-[50%] bg-ColorBlack bg-opacity-5 text-sm text-ColorBlack transition-all duration-300 hover:bg-ColorBlack hover:bg-opacity-100 hover:text-white"
-                                                aria-label="twitter">
-                                                <i class="fa-brands fa-x-twitter"></i>
-                                            </a>
-                                            <a href="https://www.facebook.com/" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="flex h-[35px] w-[35px] items-center justify-center rounded-[50%] bg-ColorBlack bg-opacity-5 text-sm text-ColorBlack transition-all duration-300 hover:bg-ColorBlack hover:bg-opacity-100 hover:text-white"
-                                                aria-label="facebook">
-                                                <i class="fa-brands fa-facebook-f"></i>
-                                            </a>
-                                            <a href="https://www.instagram.com/" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="flex h-[35px] w-[35px] items-center justify-center rounded-[50%] bg-ColorBlack bg-opacity-5 text-sm text-ColorBlack transition-all duration-300 hover:bg-ColorBlack hover:bg-opacity-100 hover:text-white"
-                                                aria-label="instagram">
-                                                <i class="fa-brands fa-instagram"></i>
-                                            </a>
-                                            <a href="https://www.github.com/" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="flex h-[35px] w-[35px] items-center justify-center rounded-[50%] bg-ColorBlack bg-opacity-5 text-sm text-ColorBlack transition-all duration-300 hover:bg-ColorBlack hover:bg-opacity-100 hover:text-white"
-                                                aria-label="github">
-                                                <i class="fa-brands fa-github"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- Team Item -->
-                                </div>
-                                <!-- Team List -->
-                            </div>
-
-                            <!-- Pricing Area -->
-                        </div>
-                        <!-- Section Container -->
-                    </div>
-                    <!-- Section Space -->
-                </div>
-                <!-- Section Background -->
-            </section>
-            <!--...::: Pricing Section End :::... -->
+            <!--...::: Teacher Section Start :::... -->
+            @include('front.teacher')
+            <!--...::: Teacher Section End :::... -->
 
             <!--...::: Content Section Start :::... -->
             <section class="section-content">
@@ -345,11 +123,11 @@
                     <!-- Section Space -->
 
                     <!-- Newsletter Shape 1 -->
-                    <img src="assets/img/elements/flower-shape-1.svg" alt="flower-shape-1" width="92"
-                        height="116" class="absolute left-[152px] top-[44px] hidden md:block" />
+                    <img src="assets/img/elements/flower-shape-1.svg" alt="flower-shape-1" width="92" height="116"
+                        class="absolute left-[152px] top-[44px] hidden md:block" />
                     <!-- Newsletter Shape 2 -->
-                    <img src="assets/img/elements/flower-shape-2.svg" alt="flower-shape-2" width="129"
-                        height="164" class="absolute bottom-0 right-[57px] hidden md:block" />
+                    <img src="assets/img/elements/flower-shape-2.svg" alt="flower-shape-2" width="129" height="164"
+                        class="absolute bottom-0 right-[57px] hidden md:block" />
                 </div>
                 <!-- Section Background -->
             </section>
@@ -405,8 +183,7 @@
                                                 aria-label="instagram">
                                                 <i class="fa-brands fa-instagram"></i>
                                             </a>
-                                            <a href="https://www.github.com/" target="_blank"
-                                                rel="noopener noreferrer"
+                                            <a href="https://www.github.com/" target="_blank" rel="noopener noreferrer"
                                                 class="flex h-[30px] w-[30px] items-center justify-center rounded-[50%] bg-ColorBlack/10 text-sm text-ColorBlack transition-all duration-300 hover:bg-ColorBlack hover:text-white"
                                                 aria-label="github">
                                                 <i class="fa-brands fa-github"></i>
