@@ -54,4 +54,21 @@ class FrontController extends Controller
         }
         return view('front.partials.teacher-list', compact('teachers', 'searchQuery'));
     }
+
+    public function blogDetail($slug)
+    {
+        $blog = \App\Models\Blog::where('slug', $slug)->firstOrFail();
+        $thumbnail = $blog->thumbnail ?? null;
+                                    if ($thumbnail && !filter_var($thumbnail, FILTER_VALIDATE_URL)) {
+                                        $thumbnail = asset($thumbnail);
+                                    }
+        return view('front.partials.blog-detail', compact('blog', 'thumbnail'));
+    }
+
+    public function aboutUs()
+    {
+        $visiMisis = \App\Models\VisiMisi::all();
+        return view('front.partials.about', compact('visiMisis'));
+    }
+
 }

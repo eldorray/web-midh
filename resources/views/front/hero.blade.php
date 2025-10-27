@@ -18,7 +18,7 @@
                             {{ $heroes->description ?? 'Your hero description goes here. This is a placeholder text to show where the description will be displayed.' }}
                         </p>
                         <div class="mb-6 flex flex-wrap justify-center gap-5 sm:justify-normal">
-                            <a href=""
+                            <a href="/ppdb"
                                 class="btn is-purple btn-animation is-large inline-block rounded"><span>Daftarkan
                                     Segera</span></a>
                         </div>

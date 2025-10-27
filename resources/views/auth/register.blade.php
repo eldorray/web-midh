@@ -1,4 +1,4 @@
-<x-guest-layout>
+{{-- <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -49,4 +49,15 @@
             </x-primary-button>
         </div>
     </form>
+</x-guest-layout> --}}
+
+<x-guest-layout>
+    <div class="max-w-xl mx-auto text-center py-12">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+            Halaman pendaftaran dinonaktifkan
+        </h1>
+        <p class="mt-4 text-gray-600 dark:text-gray-400">
+            Hanya admin yang dapat membuat akun baru. Silakan hubungi administrator untuk bantuan.
+        </p>
+    </div>
 </x-guest-layout>

@@ -30,7 +30,7 @@
                          <div class="group h-full rounded-[5px] border border-[#121212] p-5">
                              <!-- Blog Image -->
                              <div class="relative overflow-hidden rounded-[5px]">
-                                 <a href="blog-details.html" class="block">
+                                 <a href="{{ route('front.partials.blog-detail', $blog->slug) }}" class="block">
                                      <img src="{{ $blog->thumbnail ? asset('storage/' . $blog->thumbnail) : asset('assets/img/placeholder.jpg') }}"
                                          style="height:280px; object-fit:cover; object-position:center;"class="h-auto w-full transition-all duration-300 group-hover:scale-105" />
                                  </a>
@@ -52,11 +52,11 @@
                                          {{ $blog->created_at->format('M d, Y') }}
                                      </a>
                                  </div>
-                                 <a href="#"
+                                 <a href="{{ route('front.partials.blog-detail', $blog->slug) }}"
                                      class="mb-[30px] block font-PublicSans font-bold leading-[1.35] text-[#121212] group-hover:text-ColorPurple xl:text-2xl xxl:text-[28px]">Benefits
                                      {{ $blog->title }}</a>
 
-                                 <a href="service-details.html"
+                                 <a href="{{ route('front.partials.blog-detail', $blog->slug) }}"
                                      class="mt-auto inline-flex items-center gap-x-2 text-base font-bold text-[#121212] hover:text-ColorPurple">Read
                                      more
                                      <span class="transition-all duration-300 ease-in-out hover:translate-x-2">

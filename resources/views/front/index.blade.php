@@ -44,310 +44,60 @@
             @include('front.teacher')
             <!--...::: Teacher Section End :::... -->
 
-            <!--...::: Content Section Start :::... -->
-            <section class="section-content">
-                <!-- Section Space -->
-                <div class="section-space">
-                    <!-- Section Container -->
-                    <div class="container-custom">
-                        <!-- Content Area Single -->
-                        <div
-                            class="grid items-center gap-10 lg:grid-cols-2 lg:gap-24 xl:grid-cols-[1fr_minmax(0,_0.82fr)] xl:gap-[143px]">
-                            <!-- Content Block Left -->
-                            <div class="jos" data-jos_animation="fade-right">
-                                <!-- Section Wrapper -->
-                                <div>
-                                    <!-- Section Block -->
-                                    <div class="mb-5">
-                                        <h2>Seamless integration with all your favorite tools</h2>
-                                    </div>
-                                    <!-- Section Block -->
-                                </div>
-                                <!-- Section Wrapper -->
-                                <p class="max-w-[627px]">
-                                    Connect our software with the apps you use and love. With
-                                    the increasing number of integrations with communications.
-                                    Bring in customer data from your favourite tools.
-                                </p>
-                                <div class="mt-[50px]">
-                                    <a href=""
-                                        class="btn is-black btn-animation is-large inline-block rounded"><span>See all
-                                            integrations</span></a>
-                                </div>
-                            </div>
-                            <!-- Content Block Left -->
-                            <!-- Content Block Right -->
-                            <div class="jos relative" data-jos_animation="fade-left">
-                                <!-- Content Image -->
-                                <img src="assets/img/th-2/content-img-3.png" alt="content-img-3" width="472"
-                                    height="348" class="h-auto w-full" />
-                            </div>
-                            <!-- Content Block Right -->
-                        </div>
-                        <!-- Content Area Single -->
-                    </div>
-                    <!-- Section Container -->
-                </div>
-                <!-- Section Space -->
-            </section>
-            <!--...::: Content Section End :::... -->
+            @include('front.about')
+            <!--...::: Popup Advertisement Start :::... -->
+            <div x-data="{
+                showPopup: false,
+                init() {
+                    const lastShown = localStorage.getItem('popupLastShown');
+                    const now = Date.now();
+                    const thirtyMinutes = 30 * 60 * 1000;
+            
+                    if (!lastShown || (now - parseInt(lastShown)) > thirtyMinutes) {
+                        this.showPopup = true;
+                        localStorage.setItem('popupLastShown', now.toString());
+                    }
+                }
+            }" x-show="showPopup" x-cloak
+                class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm"
+                @click.self="showPopup = false">
+                <div
+                    class="relative max-w-2xl w-full mx-4 bg-white rounded-lg shadow-2xl overflow-hidden animate-fade-in">
+                    <!-- Close Button -->
+                    <button @click="showPopup = false"
+                        class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white rounded-full shadow-lg transition-all duration-300 hover:scale-110">
+                        <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
 
-            <!--...::: CTA Section Start :::... -->
-            <section class="section-cta">
-                <!-- Section Background -->
-                <div class="relative bg-ColorPurple">
-                    <!-- Section Space -->
-                    <div class="py-[60px] lg:py-20 xl:py-[100px]">
-                        <!-- Section Container -->
-                        <div class="container-default">
-                            <!-- Section Content Wrapper -->
-                            <div class="jos mb-[50px]">
-                                <!-- Section Content Block -->
-                                <div class="mx-auto max-w-[700px]">
-                                    <h2 class="text-center text-white">
-                                        Sign up for your free trial today & add live chat to your
-                                        site
-                                    </h2>
-                                </div>
-                                <!-- Section Content Block -->
-                            </div>
-                            <!-- Section Content Wrapper -->
-                            <div class="jos flex justify-center">
-                                <a href="" class="btn is-black btn-animation is-large inline-block rounded">
-                                    <span>Get started free</span>
-                                </a>
-                            </div>
+                    <!-- Popup Content -->
+                    <div class="p-8 text-center">
+                        <img src="assets/img/icons/fire-icon.png" alt="PPDB Icon" class="w-20 h-20 mx-auto mb-4" />
+                        <h2 class="text-3xl font-bold text-ColorBlack mb-3">PPDB 2026-2027</h2>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">MI Daarul Hikmah</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">
+                            Daftarkan segera putra-putri Anda! <br>
+                            Pendaftaran sudah dibuka untuk tahun ajaran 2026-2027
+                        </p>
+                        <div class="flex gap-4 justify-center">
+                            <a href="/ppdb"
+                                class="px-8 py-3 bg-ColorBlack text-white font-semibold rounded-lg hover:bg-gray-800 transition-all duration-300 transform hover:scale-105">
+                                Daftar Sekarang
+                            </a>
+                            <button @click="showPopup = false"
+                                class="px-8 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-all duration-300">
+                                Nanti Saja
+                            </button>
                         </div>
-                        <!-- Section Container -->
                     </div>
-                    <!-- Section Space -->
-
-                    <!-- Newsletter Shape 1 -->
-                    <img src="assets/img/elements/flower-shape-1.svg" alt="flower-shape-1" width="92" height="116"
-                        class="absolute left-[152px] top-[44px] hidden md:block" />
-                    <!-- Newsletter Shape 2 -->
-                    <img src="assets/img/elements/flower-shape-2.svg" alt="flower-shape-2" width="129" height="164"
-                        class="absolute bottom-0 right-[57px] hidden md:block" />
                 </div>
-                <!-- Section Background -->
-            </section>
-            <!--...::: CTA Section End :::... -->
+            </div>
+            <!--...::: Popup Advertisement End :::... -->
         </main>
 
-        <!--...::: Footer Section Start :::... -->
-        <footer class="section-footer">
-            <div class="bg-white">
-                <!-- Footer Area Center -->
-                <div class="text-ColorBlack">
-                    <!-- Footer Center Spacing -->
-                    <div class="py-[60px] lg:py-20">
-                        <!-- Section Container -->
-                        <div class="container-default">
-                            <!-- Footer Widget List -->
-                            <div
-                                class="grid gap-x-4 lg:gap-x-16 gap-y-10 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-[1fr_repeat(3,_auto)] xl:lg:grid-cols-[1fr_repeat(4,_auto)]  xl:gap-x-20">
-                                <!-- Footer Widget Item -->
-                                <div class="flex flex-col gap-y-7 md:col-span-4 lg:col-span-1">
-                                    <!-- Footer Logo -->
-                                    <a href="index.html">
-                                        <img src="assets/img/logo-purple-dark.png" alt="Masco" width="109"
-                                            height="24" />
-                                    </a>
-                                    <!-- Footer Content -->
-                                    <div>
-                                        <!-- Footer About Text -->
-                                        <div class="lg:max-w-[320px]">
-                                            Email, SMS, Facebook, Chat, CRM, & more, all-in-one
-                                            platform to help you grow your business through building
-                                            stronger customer relationships.
-                                        </div>
-                                        <!-- Footer Mail -->
-                                        <a href="mailto:yourdemo@email.com"
-                                            class="my-6 block underline-offset-4 transition-all duration-300 hover:underline">yourdemo@email.com</a>
-                                        <!-- Footer Social Link -->
-                                        <div class="flex flex-wrap gap-5">
-                                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-                                                class="flex h-[30px] w-[30px] items-center justify-center rounded-[50%] bg-ColorBlack/10 text-sm text-ColorBlack transition-all duration-300 hover:bg-ColorBlack hover:text-white"
-                                                aria-label="twitter">
-                                                <i class="fa-brands fa-x-twitter"></i>
-                                            </a>
-                                            <a href="https://www.facebook.com/" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="flex h-[30px] w-[30px] items-center justify-center rounded-[50%] bg-ColorBlack/10 text-sm text-ColorBlack transition-all duration-300 hover:bg-ColorBlack hover:text-white"
-                                                aria-label="facebook">
-                                                <i class="fa-brands fa-facebook-f"></i>
-                                            </a>
-                                            <a href="https://www.instagram.com/" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="flex h-[30px] w-[30px] items-center justify-center rounded-[50%] bg-ColorBlack/10 text-sm text-ColorBlack transition-all duration-300 hover:bg-ColorBlack hover:text-white"
-                                                aria-label="instagram">
-                                                <i class="fa-brands fa-instagram"></i>
-                                            </a>
-                                            <a href="https://www.github.com/" target="_blank" rel="noopener noreferrer"
-                                                class="flex h-[30px] w-[30px] items-center justify-center rounded-[50%] bg-ColorBlack/10 text-sm text-ColorBlack transition-all duration-300 hover:bg-ColorBlack hover:text-white"
-                                                aria-label="github">
-                                                <i class="fa-brands fa-github"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- Footer Content -->
-                                </div>
-                                <!-- Footer Widget Item -->
-
-                                <!-- Footer Widget Item -->
-                                <div class="flex flex-col gap-y-7 md:col-span-1 lg:col-span-1">
-                                    <!-- Footer Widget Title -->
-                                    <div class="text-xl font-semibold capitalize">
-                                        Primary Pages
-                                    </div>
-                                    <!-- Footer Navbar -->
-                                    <ul class="flex flex-col gap-y-[10px] capitalize">
-                                        <li>
-                                            <a href="index.html"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">Home</a>
-                                        </li>
-                                        <li>
-                                            <a href="about.html"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">About
-                                                Us</a>
-                                        </li>
-                                        <li>
-                                            <a href="services.html"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">Services</a>
-                                        </li>
-                                        <li>
-                                            <a href="pricing.html"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">pricing</a>
-                                        </li>
-                                        <li>
-                                            <a href="contact.html"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">Contact</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- Footer Widget Item -->
-
-                                <!-- Footer Widget Item -->
-                                <div class="flex flex-col gap-y-6 md:col-span-1 lg:col-span-1">
-                                    <!-- Footer Title -->
-                                    <div class="text-xl font-semibold capitalize">
-                                        Utility pages
-                                    </div>
-                                    <!-- Footer Title -->
-
-                                    <!-- Footer Navbar -->
-                                    <ul class="flex flex-col gap-y-[10px] capitalize">
-                                        <li>
-                                            <a href="signup.html"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">Signup</a>
-                                        </li>
-                                        <li>
-                                            <a href="login.html"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">Login</a>
-                                        </li>
-                                        <li>
-                                            <a href="error-404.html"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">404
-                                                Not found</a>
-                                        </li>
-                                        <li>
-                                            <a href="reset-password.html"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">Password
-                                                Reset</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- Footer Widget Item-->
-
-                                <!-- Footer Widget Item -->
-                                <div class="flex flex-col gap-y-6 md:col-span-1 lg:col-span-1">
-                                    <!-- Footer Title -->
-                                    <div class="text-xl font-semibold capitalize">
-                                        Resources
-                                    </div>
-                                    <!-- Footer Title -->
-
-                                    <!-- Footer Navbar -->
-                                    <ul class="flex flex-col gap-y-[10px] capitalize">
-                                        <li>
-                                            <a href="https://www.example.com/" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">Support</a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.example.com/" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">Privacy
-                                                policy</a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.example.com/" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">Terms
-                                                & Conditions</a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.example.com/" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">Strategic
-                                                finance</a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.example.com/" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="hover:opcity-100 underline-offset-4 opacity-80 transition-all duration-300 ease-linear hover:underline">Video
-                                                guide</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- Footer Widget Item -->
-                                <!-- Footer Widget Item -->
-                                <div class="flex flex-col gap-y-6 md:col-span-1 lg:col-span-1">
-                                    <!-- Footer Title -->
-                                    <div class="text-xl font-semibold capitalize">
-                                        Download now
-                                    </div>
-                                    <!-- Footer Title -->
-
-                                    <div class="flex flex-col gap-3">
-                                        <a href="#">
-                                            <img src="assets/img/icons/icon-apple-app-store.svg"
-                                                alt="icon-apple-app-store" width="166" height="54" />
-                                        </a>
-                                        <a href="#">
-                                            <img src="assets/img/icons/icon-google-play-store.svg"
-                                                alt="icon-apple-app-store" width="166" height="51" />
-                                        </a>
-                                    </div>
-                                </div>
-                                <!-- Footer Widget Item -->
-                            </div>
-                            <!-- Footer Widget List -->
-                        </div>
-                        <!-- Section Container -->
-                    </div>
-                    <!-- Footer Center Spacing -->
-                </div>
-                <!-- Footer Area Center -->
-                <div class="horizontal-line bg-ColorBlack"></div>
-                <!-- Footer Bottom -->
-                <div>
-                    <!-- Footer Bottom Spacing -->
-                    <div class="py-[18px]">
-                        <!-- Section Container -->
-                        <div class="container-default">
-                            <div class="text-center">
-                                &copy; Copyright 2024, All Rights Reserved by Mthemeus
-                            </div>
-                        </div>
-                        <!-- Section Container -->
-                    </div>
-                    <!-- Footer Bottom Spacing -->
-                </div>
-                <!-- Footer Bottom -->
-            </div>
-        </footer>
-        <!--...::: Footer Section End :::... -->
+        @include('front.footer')
     </div>
     <!--...::: Main Wrapper End :::... -->
 </x-layouts.app>

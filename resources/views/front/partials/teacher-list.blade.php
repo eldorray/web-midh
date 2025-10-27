@@ -113,4 +113,5 @@
         </div>
         <!--...::: Team Section End :::... -->
     </main>
+    @include('front.footer')
 </x-layouts.app>

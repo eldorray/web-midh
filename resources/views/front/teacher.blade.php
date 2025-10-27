@@ -67,7 +67,7 @@
                     </div>
                     <!-- Team List -->
                     <div class="flex justify-center mt-8">
-                        <a href="#"
+                        <a href="{{ route('front.partials.teacher-list') }}"
                             class="inline-block rounded-md bg-ColorPurple px-6 py-3 text-center text-white font-semibold transition-all duration-300 hover:bg-opacity-90">See
                             More >></a>
                     </div>
