@@ -38,7 +38,7 @@
                             </a>
                         </li>
                         <li class="nav-item nav-item-has-children">
-                            <a href="#" class="nav-link-item drop-trigger">Contact
+                            <a href="{{ route('front.partials.contact') }}" class="nav-link-item drop-trigger">Contact
                             </a>
                         </li>
                         <li class="nav-item nav-item-has-children">

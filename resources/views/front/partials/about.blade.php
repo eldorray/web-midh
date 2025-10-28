@@ -1,3 +1,4 @@
+ @section('title', 'About - ' . config('app.name', 'School'))
  <x-layouts.app>
      @include('front.header')
      <main class="main-wrapper relative overflow-hidden">
@@ -250,7 +251,7 @@
                                      </p>
                                  </div>
                                  <!-- Section Wrapper -->
-                                 <a href="contact.html"
+                                 <a href="/contact-us"
                                      class="btn is-blue is-rounded btn-animation is-large group mt-8 inline-block lg:mt-[50px]"><span>Get
                                          in touch</span></a>
                              </div>

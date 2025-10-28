@@ -11,7 +11,7 @@ class VisiMisi extends Model
     use HasFactory;
     use HasRichText;
 
-    protected $guarded = [];
+    protected $fillable = ['visi', 'misi', 'tujuan', 'motto', 'sejarah', 'image'];
 
     protected $richTextAttributes = [
         'misi',

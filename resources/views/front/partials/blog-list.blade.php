@@ -1,3 +1,4 @@
+@section('title', 'Blog List - ' . config('app.name', 'School'))
 <x-layouts.app>
     @include('front.header')
     <main class="main-wrapper relative overflow-hidden">
@@ -48,7 +49,8 @@
                                     <div class="jos">
                                         <div
                                             class="group overflow-hidden rounded-[10px] border border-[#E1E1E] bg-white hover:border-white hover:shadow-[0_4px_60px_rgba(10,16,47,0.08)]">
-                                            <a href="blog-details.html" class="block overflow-hidden">
+                                            <a href="{{ route('front.partials.blog-detail', $blog->slug) }}"
+                                                class="block overflow-hidden">
                                                 <img src="{{ $blog->thumbnail }}" alt="blog-main-1" width="856"
                                                     height="450"
                                                     class="h-auto w-full scale-100 object-cover transition-all duration-300 group-hover:scale-105" />

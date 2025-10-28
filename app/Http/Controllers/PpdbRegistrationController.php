@@ -313,6 +313,6 @@ class PpdbRegistrationController extends Controller
 
         $registration->delete();
 
-        return back()->with('success', 'Data berhasil dihapus');
+        return redirect()->route('ppdb.admin.index')->with('success', 'Data berhasil dihapus');
     }
 }

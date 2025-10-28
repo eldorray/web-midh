@@ -95,9 +95,20 @@
                 </div>
             </div>
             <!--...::: Popup Advertisement End :::... -->
+
+            {{-- tombol ketika halaman scrol ke bawah diklik menuju keatas --}}
+            <button id="scrollToTopBtn"
+                class="fixed bottom-6 end-6 z-50 hidden h-12 w-12 items-center justify-center rounded-full bg-ColorBlack text-white shadow-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                </svg>
+            </button>
+
         </main>
 
         @include('front.footer')
     </div>
     <!--...::: Main Wrapper End :::... -->
+    <script src="{{ asset('assets/js/btnToTop.js') }}"></script>
 </x-layouts.app>

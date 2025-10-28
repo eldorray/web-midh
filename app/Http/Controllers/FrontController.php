@@ -71,4 +71,9 @@ class FrontController extends Controller
         return view('front.partials.about', compact('visiMisis'));
     }
 
+    public function contactUs()
+    {
+        return view('front.partials.contact');
+    }
+
 }

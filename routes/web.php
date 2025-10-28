@@ -14,6 +14,7 @@ Route::get('/blog-list', [App\Http\Controllers\FrontController::class, 'blogList
 Route::get('/teacher-list', [App\Http\Controllers\FrontController::class, 'teacherList'])->name('front.partials.teacher-list');
 Route::get('/blog-detail/{slug}', [App\Http\Controllers\FrontController::class, 'blogDetail'])->name('front.partials.blog-detail');
 Route::get('/about-us', [App\Http\Controllers\FrontController::class, 'aboutUs'])->name('front.partials.about');
+Route::get('/contact-us', [App\Http\Controllers\FrontController::class, 'contactUs'])->name('front.partials.contact');
 
 
 // Public PPDB Routes

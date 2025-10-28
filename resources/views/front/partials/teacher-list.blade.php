@@ -1,3 +1,4 @@
+@section('title', 'Teacher List - ' . config('app.name', 'School'))
 <x-layouts.app>
     @include('front.header')
     <main class="main-wrapper relative overflow-hidden">

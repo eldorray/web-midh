@@ -1,4 +1,5 @@
-<x-layouts.app :title="$blog->title">
+@section('title', 'Blog Detail - ' . config('app.name', 'School'))
+<x-layouts.app>
     @include('front.header')
     <main class="main-wrapper relative overflow-hidden">
         <section class="section-breadcrumb">
