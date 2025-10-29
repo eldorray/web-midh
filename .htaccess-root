@@ -1,0 +1,7 @@
+# .htaccess untuk ROOT directory (public_html)
+# Redirect semua request ke folder public
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
