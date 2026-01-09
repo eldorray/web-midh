@@ -39,10 +39,9 @@
             </div>
 
             <!-- Sidebar -->
-            <aside class="sidebar" 
-                   :class="{ '-translate-x-full': !sidebarOpen, 'translate-x-0': sidebarOpen }"
-                   x-cloak
-                   @class(['lg:translate-x-0'])>
+            <aside class="sidebar lg:translate-x-0" 
+                   :class="{ '-translate-x-full lg:translate-x-0': !sidebarOpen, 'translate-x-0': sidebarOpen }"
+                   x-cloak>
                 <div class="flex flex-col h-full">
                     <!-- Logo -->
                     <div class="flex items-center gap-3 px-6 py-5 border-b border-gray-200">
