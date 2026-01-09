@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PpdbRegistration;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\PpdbRegistrationExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PpdbRegistrationController extends Controller
 {
@@ -314,5 +316,10 @@ class PpdbRegistrationController extends Controller
         $registration->delete();
 
         return redirect()->route('ppdb.admin.index')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function export()
+    {
+        return Excel::download(new PpdbRegistrationExport, 'ppdb-registrations-' . date('Y-m-d') . '.xlsx');
     }
 }

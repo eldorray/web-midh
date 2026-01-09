@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('blog', App\Http\Controllers\BlogController::class);
 
     Route::get('/admin/ppdb', [PpdbRegistrationController::class, 'adminIndex'])->name('ppdb.admin.index');
+    Route::get('/admin/ppdb/export', [PpdbRegistrationController::class, 'export'])->name('ppdb.admin.export');
     Route::get('/admin/ppdb/{id}', [PpdbRegistrationController::class, 'adminShow'])->name('ppdb.admin.show');
     Route::get('/admin/ppdb/{id}/edit', [PpdbRegistrationController::class, 'adminEdit'])->name('ppdb.admin.edit');
     Route::put('/admin/ppdb/{id}', [PpdbRegistrationController::class, 'adminUpdate'])->name('ppdb.admin.update');
