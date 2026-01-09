@@ -51,7 +51,7 @@
                                             class="group overflow-hidden rounded-[10px] border border-[#E1E1E] bg-white hover:border-white hover:shadow-[0_4px_60px_rgba(10,16,47,0.08)]">
                                             <a href="{{ route('front.partials.blog-detail', $blog->slug) }}"
                                                 class="block overflow-hidden">
-                                                <img src="{{ $blog->thumbnail }}" alt="blog-main-1" width="856"
+                                                <img src="{{ asset('storage/' . $blog->thumbnail) }}" alt="blog-main-1" width="856"
                                                     height="450"
                                                     class="h-auto w-full scale-100 object-cover transition-all duration-300 group-hover:scale-105" />
                                             </a>
@@ -62,7 +62,7 @@
                                                     <li>
                                                         <a href="blog-details.html"
                                                             class="flex items-center gap-x-[10px] hover:text-ColorBlue">
-                                                            <img src="assets/img/th-1/blog-author-img-1.jpg"
+                                                            <img src="{{ asset('storage/' . $blog->author_image) }}"
                                                                 alt="blog-author-img-1" width="45" height="45"
                                                                 class="rounded-[50%]" />
                                                             By {{ $blog->author }}
@@ -158,7 +158,7 @@
                                         <li class="group flex flex-col items-center gap-x-4 gap-y-4 sm:flex-row">
                                             <a href="blog-details.html"
                                                 class="inline-block h-[100px] w-full overflow-hidden rounded-[5px] sm:w-[150px]">
-                                                <img src="{{ $recent->thumbnail ?? asset('assets/img/th-1/blog-recent-img-1.jpg') }}"
+                                                <img src="{{ $recent->thumbnail ?? asset('storage/' . $recent->thumbnail) }}"
                                                     alt="{{ $recent->title }}" width="150" height="100"
                                                     class="h-full w-full scale-100 object-cover transition-all duration-300 group-hover:scale-105" />
                                             </a>
