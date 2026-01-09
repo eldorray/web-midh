@@ -34,7 +34,7 @@
                                 <article class="jos overflow-hidden bg-white">
                                     @if ($thumbnail)
                                         <div class="mb-7 block overflow-hidden rounded-[10px]">
-                                            <img src="{{ $thumbnail }}" alt="{{ $blog->title }}" width="856"
+                                            <img src="{{ asset('storage/' . $blog->thumbnail) }}" alt="{{ $blog->title }}" width="856"
                                                 height="540" class="h-auto w-full object-cover" />
                                         </div>
                                     @endif
