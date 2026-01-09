@@ -68,8 +68,8 @@
                         @forelse ($teachers as $teacher)
                             <div class="jos flex flex-col items-center justify-center rounded-[10px] bg-white p-5 text-center shadow-[0_4px_80px_0_rgba(0,0,0,0.08)]"
                                 data-jos_animation="flip-left">
-                                <img src="{{ $teacher->photo }}" alt="team-img-1" width="266" height="250"
-                                    class="h-auto w-full rounded-[10px] lg:w-auto" />
+                                <img src="{{ asset('storage/' . $teacher->photo) }}" alt="team-img-1" width="266"
+                                    height="250" class="h-auto w-full rounded-[10px] lg:w-auto" />
                                 <div class="mb-4 mt-6">
                                     <div class="mb-1 text-xl font-semibold text-ColorBlack">
                                         {{ $teacher->name }}
