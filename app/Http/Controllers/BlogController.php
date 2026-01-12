@@ -3,22 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class BlogController extends Controller
 {
+    protected FileUploadService $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
+    }
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of blog posts.
      */
     public function index()
     {
-        $blogs = Blog::paginate(5);
+        $blogs = Blog::latest()->paginate(10);
         return view('back.blog.index', compact('blogs'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new blog post.
      */
     public function create()
     {
@@ -26,7 +33,7 @@ class BlogController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created blog post in storage.
      */
     public function store(Request $request)
     {
@@ -40,32 +47,31 @@ class BlogController extends Controller
             'is_published' => 'nullable|boolean',
         ]);
 
-        // Handle thumbnail upload
+        // Handle thumbnail upload with compression
         if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $request->file('thumbnail')->store('blogs', 'public');
+            $validated['thumbnail'] = $this->fileUploadService->upload(
+                $request->file('thumbnail'),
+                'blogs'
+            );
         }
 
         // Handle is_published checkbox
-        $validated['is_published'] = $request->has('is_published') ? true : false;
+        $validated['is_published'] = $request->boolean('is_published');
 
         // Handle rich text content - provide fallback
         if (empty($validated['content'])) {
             $validated['content'] = $request->input('content', '');
         }
 
-        Log::info('Blog store request data:', [
-            'all' => $request->all(),
-            'content' => $request->input('content'),
-            'validated' => $validated
-        ]);
-
         Blog::create($validated);
 
-        return redirect()->route('blog.index')->with('success', 'Blog post created successfully.');
+        return redirect()
+            ->route('blog.index')
+            ->with('success', 'Blog post berhasil dibuat.');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified blog post.
      */
     public function show(Blog $blog)
     {
@@ -73,7 +79,7 @@ class BlogController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified blog post.
      */
     public function edit(Blog $blog)
     {
@@ -81,7 +87,7 @@ class BlogController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified blog post in storage.
      */
     public function update(Request $request, Blog $blog)
     {
@@ -95,13 +101,17 @@ class BlogController extends Controller
             'is_published' => 'nullable|boolean',
         ]);
 
-        // Handle thumbnail upload
+        // Handle thumbnail upload with compression (replace old file)
         if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $request->file('thumbnail')->store('blogs', 'public');
+            $validated['thumbnail'] = $this->fileUploadService->replace(
+                $request->file('thumbnail'),
+                $blog->thumbnail,
+                'blogs'
+            );
         }
 
         // Handle is_published checkbox
-        $validated['is_published'] = $request->has('is_published') ? true : false;
+        $validated['is_published'] = $request->boolean('is_published');
 
         // Handle rich text content - provide fallback
         if (empty($validated['content'])) {
@@ -110,15 +120,23 @@ class BlogController extends Controller
 
         $blog->update($validated);
 
-        return redirect()->route('blog.index')->with('success', 'Blog post updated successfully.');
+        return redirect()
+            ->route('blog.index')
+            ->with('success', 'Blog post berhasil diperbarui.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified blog post from storage.
      */
     public function destroy(Blog $blog)
     {
+        // Delete the thumbnail file
+        $this->fileUploadService->delete($blog->thumbnail);
+
         $blog->delete();
-        return redirect()->route('blog.index')->with('success', 'Blog post deleted successfully.');
+
+        return redirect()
+            ->route('blog.index')
+            ->with('success', 'Blog post berhasil dihapus.');
     }
 }

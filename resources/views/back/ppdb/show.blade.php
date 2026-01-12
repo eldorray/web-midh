@@ -112,7 +112,7 @@
                     <!-- Action Buttons -->
                     <div class="mt-6 flex gap-3">
                         @if ($registration->status !== 'rejected')
-                            <form action="{{ route('ppdb.admin.approve', $registration->id) }}" method="POST"
+                            <form action="{{ route('admin.ppdb.approve', $registration->id) }}" method="POST"
                                 class="inline">
                                 @csrf
                                 <button type="submit"
@@ -135,7 +135,7 @@
                             <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
                                 <div class="mt-3">
                                     <h3 class="text-lg font-medium text-gray-900 mb-4">Alasan Penolakan</h3>
-                                    <form action="{{ route('ppdb.admin.reject', $registration->id) }}" method="POST">
+                                    <form action="{{ route('admin.ppdb.reject', $registration->id) }}" method="POST">
                                         @csrf
                                         <textarea name="catatan_admin" rows="4" required
                                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -164,15 +164,15 @@
                                 document.getElementById('rejectModal').classList.add('hidden');
                             }
                         </script>
-                        <a href="{{ route('ppdb.admin.index') }}"
+                        <a href="{{ route('admin.ppdb.index') }}"
                             class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
                             Kembali
                         </a>
-                        <a href="{{ route('ppdb.admin.edit', $registration->id) }}"
+                        <a href="{{ route('admin.ppdb.edit', $registration->id) }}"
                             class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                             Edit
                         </a>
-                        <form action="{{ route('ppdb.admin.destroy', $registration->id) }}" method="POST"
+                        <form action="{{ route('admin.ppdb.destroy', $registration->id) }}" method="POST"
                             class="inline"
                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus pendaftaran ini?')">
                             @csrf

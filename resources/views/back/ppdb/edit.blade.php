@@ -14,7 +14,7 @@
 
                         <!-- Form Card -->
                         <div class="bg-white rounded-lg shadow-lg p-8">
-                            <form action="{{ route('ppdb.admin.update', $registration->id) }}" method="POST"
+                            <form action="{{ route('admin.ppdb.update', $registration->id) }}" method="POST"
                                 enctype="multipart/form-data" id="registrationForm">
                                 @csrf
                                 @method('PUT')

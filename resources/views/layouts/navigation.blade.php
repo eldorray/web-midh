@@ -30,7 +30,7 @@
                     <x-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.*')">
                         {{ __('Blogs') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('ppdb.admin.index')" :active="request()->routeIs('ppdb.*')">
+                    <x-nav-link :href="route('admin.ppdb.index')" :active="request()->routeIs('ppdb.*')">
                         {{ __('PPDB') }}
                     </x-nav-link>
                 </div>

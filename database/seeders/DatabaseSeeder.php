@@ -21,9 +21,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Fahmie',
             'email' => 'fahmie@gmail.com',
             'password' => bcrypt('elfahmie'),
+            'is_admin' => true,
         ]);
 
         $this->call([
+            SchoolSettingSeeder::class,
             BlogSeeder::class,
         ]);
 

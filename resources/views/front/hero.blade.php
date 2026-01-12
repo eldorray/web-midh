@@ -35,7 +35,7 @@
                 <div class="jos">
                     <div class="relative mx-auto h-auto max-w-[280px] sm:max-w-[500px] lg:ml-auto lg:mr-0">
                         <!-- Hero Main Image -->
-                        <img src="{{ $heroes->image ? asset('storage/' . $heroes->image) : asset('assets/img/th-2/hero-img.png') }}"
+                        <img src="{{ $heroes && $heroes->image ? asset('storage/' . $heroes->image) : asset('assets/img/th-2/hero-img.png') }}"
                             alt="hero-img" width="499" height="505" />
                         <!-- Hero Avatar Image -->
 

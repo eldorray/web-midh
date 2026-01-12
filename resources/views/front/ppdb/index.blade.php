@@ -166,25 +166,22 @@
                                                                 class="text-xs uppercase tracking-wide text-gray-500 font-semibold mb-1">
                                                                 Status Pendaftaran</p>
                                                             <p id="resultStatus" class="text-lg font-bold"></p>
-                                                            @foreach ($registrations as $registration)
-                                                                <p class="text-base text-red-900 mt-2">
-                                                                    {{ $registration->catatan_admin }}</p>
+                                                            <p id="resultNotes" class="text-base text-red-900 mt-2 hidden"></p>
 
-                                                                <div id="revisionButton" class="hidden mt-4">
-                                                                    <a href="{{ route('ppdb.edit', $registration->id) }}"
-                                                                        class="inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
-                                                                        <svg class="w-5 h-5" fill="none"
-                                                                            stroke="currentColor" viewBox="0 0 24 24">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round"
-                                                                                stroke-width="2"
-                                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                                                            </path>
-                                                                        </svg>
-                                                                        Perbaiki Data Pendaftaran
-                                                                    </a>
-                                                                </div>
-                                                            @endforeach
+                                                            <div id="revisionButton" class="hidden mt-4">
+                                                                <a id="revisionLink" href="#"
+                                                                    class="inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                                                                    <svg class="w-5 h-5" fill="none"
+                                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            stroke-width="2"
+                                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                                        </path>
+                                                                    </svg>
+                                                                    Perbaiki Data Pendaftaran
+                                                                </a>
+                                                            </div>
                                                         </div>
 
                                                         <div class="bg-white rounded-lg p-4 border border-green-100">
@@ -350,9 +347,20 @@
                         `<span class="${statusColor[data.data.status_value] || 'text-gray-600'}">${data.data.status}</span>`;
                     document.getElementById('resultDate').textContent = data.data.created_at;
 
+                    // Show admin notes if rejected
+                    const resultNotes = document.getElementById('resultNotes');
+                    if (data.data.catatan_admin) {
+                        resultNotes.textContent = data.data.catatan_admin;
+                        resultNotes.classList.remove('hidden');
+                    } else {
+                        resultNotes.classList.add('hidden');
+                    }
+
                     // Show revision button if status is rejected
                     const revisionButton = document.getElementById('revisionButton');
+                    const revisionLink = document.getElementById('revisionLink');
                     if (data.data.status_value === 'rejected') {
+                        revisionLink.href = '/ppdb/edit/' + data.data.id;
                         revisionButton.classList.remove('hidden');
                     } else {
                         revisionButton.classList.add('hidden');

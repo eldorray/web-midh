@@ -7,7 +7,7 @@
                 <h3 class="text-lg font-semibold text-gray-900">Daftar Pendaftar PPDB</h3>
                 <p class="text-sm text-gray-500 mt-1">Kelola pendaftaran peserta didik baru</p>
             </div>
-            <a href="{{ route('ppdb.admin.export') }}" class="btn btn-success">
+            <a href="{{ route('admin.ppdb.export') }}" class="btn btn-success">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                 </svg>
@@ -46,7 +46,7 @@
                             </td>
                             <td class="text-gray-500">{{ $registration->created_at->format('d M Y H:i') }}</td>
                             <td class="text-right">
-                                <a href="{{ route('ppdb.admin.show', $registration->id) }}" class="btn btn-ghost btn-sm">
+                                <a href="{{ route('admin.ppdb.show', $registration->id) }}" class="btn btn-ghost btn-sm">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>

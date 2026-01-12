@@ -2,6 +2,7 @@
     'label' => null,
     'error' => null,
     'options' => [],
+    'value' => null,
     'placeholder' => 'Select an option',
 ])
 
@@ -14,8 +15,8 @@
     
     <select {{ $attributes->merge(['class' => 'input cursor-pointer' . ($error ? ' border-[hsl(var(--destructive))]' : '')]) }}>
         <option value="">{{ $placeholder }}</option>
-        @foreach($options as $value => $text)
-            <option value="{{ $value }}">{{ $text }}</option>
+        @foreach($options as $optValue => $text)
+            <option value="{{ $optValue }}" {{ $value == $optValue ? 'selected' : '' }}>{{ $text }}</option>
         @endforeach
     </select>
     

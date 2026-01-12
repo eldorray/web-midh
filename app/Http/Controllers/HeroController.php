@@ -2,91 +2,119 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hero;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 
 class HeroController extends Controller
 {
-    public function index()
-    {
-        $heroes = \App\Models\Hero::all();
-        return view('back.hero.index', compact('heroes'));
+    protected FileUploadService $fileUploadService;
 
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
     }
 
+    /**
+     * Display a listing of heroes.
+     */
+    public function index()
+    {
+        $heroes = Hero::all();
+        return view('back.hero.index', compact('heroes'));
+    }
+
+    /**
+     * Show the form for creating a new hero.
+     */
     public function create()
     {
         return view('back.hero.create');
     }
 
-    public function edit($id)
+    /**
+     * Show the form for editing the specified hero.
+     */
+    public function edit(Hero $hero)
     {
-        $hero = \App\Models\Hero::findOrFail($id);
         return view('back.hero.edit', compact('hero'));
     }
 
+    /**
+     * Store a newly created hero in storage.
+     */
     public function store(Request $request)
     {
-        // Validate the request data
         $validated = $request->validate([
-            'title'         => 'required|string|max:255',
-            'description'   => 'nullable|string',
-            'small_text'    => 'nullable|string|max:255',
-            'image'         => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'is_active'     => 'sometimes|boolean',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'small_text' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
+            'is_active' => 'sometimes|boolean',
         ]);
 
-        // Handle file upload if an image is provided
+        // Handle file upload with compression
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('heroes', 'public');
-            $validated['image'] = $imagePath;
+            $validated['image'] = $this->fileUploadService->upload(
+                $request->file('image'),
+                'heroes'
+            );
         }
 
-        // Normalize is_active: make sure it's present and boolean
-        $validated['is_active'] = $request->has('is_active') ? (bool) $request->input('is_active') : false;
+        // Normalize is_active
+        $validated['is_active'] = $request->boolean('is_active');
 
-        // Create a new Hero record
-        \App\Models\Hero::create($validated);
+        Hero::create($validated);
 
-        return redirect()->route('hero.index')->with('success', 'Hero created successfully.');
+        return redirect()
+            ->route('hero.index')
+            ->with('success', 'Hero berhasil ditambahkan.');
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified hero in storage.
+     */
+    public function update(Request $request, Hero $hero)
     {
-        // Find the existing Hero record
-        $hero = \App\Models\Hero::findOrFail($id);
-
-        // Validate the request data
         $validated = $request->validate([
-            'title'         => 'required|string|max:255',
-            'description'   => 'nullable|string',
-            'small_text'    => 'nullable|string|max:255',
-            'image'         => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'is_active'     => 'sometimes|boolean',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'small_text' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
+            'is_active' => 'sometimes|boolean',
         ]);
 
-        // Handle file upload if an image is provided
+        // Handle file upload with compression (replace old file)
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('heroes', 'public');
-            $validated['image'] = $imagePath;
+            $validated['image'] = $this->fileUploadService->replace(
+                $request->file('image'),
+                $hero->image,
+                'heroes'
+            );
         }
 
-        // Normalize is_active: make sure it's present and boolean
-        $validated['is_active'] = $request->has('is_active') ? (bool) $request->input('is_active') : false;
+        // Normalize is_active
+        $validated['is_active'] = $request->boolean('is_active');
 
-        // Update the Hero record
         $hero->update($validated);
 
-        return redirect()->route('hero.index')->with('success', 'Hero updated successfully.');
+        return redirect()
+            ->route('hero.index')
+            ->with('success', 'Hero berhasil diperbarui.');
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified hero from storage.
+     */
+    public function destroy(Hero $hero)
     {
-        // Find the existing Hero record
-        $hero = \App\Models\Hero::findOrFail($id);
+        // Delete the image file
+        $this->fileUploadService->delete($hero->image);
 
-        // Delete the Hero record
         $hero->delete();
 
-        return redirect()->route('hero.index')->with('success', 'Hero deleted successfully.');
+        return redirect()
+            ->route('hero.index')
+            ->with('success', 'Hero berhasil dihapus.');
     }
 }

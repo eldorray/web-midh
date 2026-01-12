@@ -3,85 +3,114 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
+    protected FileUploadService $fileUploadService;
 
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
+    }
+
+    /**
+     * Display a listing of teachers.
+     */
     public function index()
     {
         $teachers = Teacher::all();
         return view('back.teacher.index', compact('teachers'));
     }
 
-
+    /**
+     * Show the form for creating a new teacher.
+     */
     public function create()
     {
         return view('back.teacher.create');
     }
 
+    /**
+     * Store a newly created teacher in storage.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'photo'     => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
-            'name'      => 'required|string|max:255',
-            'subject'   => 'required|string|max:255',
-            'instagram' => 'required|string|max:255|unique:teachers,instagram',
-            'facebook'  => 'required|string|max:255|unique:teachers,facebook',
-            'twitter'   => 'required|string|max:255|unique:teachers,twitter',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'name' => 'required|string|max:255',
+            'subject' => 'required|string|max:255',
+            'instagram' => 'nullable|string|max:255',
+            'facebook' => 'nullable|string|max:255',
+            'twitter' => 'nullable|string|max:255',
         ]);
 
-        $path = null;
+        // Handle photo upload with compression
         if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('teachers', 'public');
+            $validated['photo'] = $this->fileUploadService->upload(
+                $request->file('photo'),
+                'teachers'
+            );
         }
 
-        Teacher::create([
-            'photo'     => $path,
-            'name'      => $validated['name'],
-            'subject'   => $validated['subject'],
-            'instagram' => $validated['instagram'],
-            'facebook'  => $validated['facebook'],
-            'twitter'   => $validated['twitter'],
-        ]);
+        Teacher::create($validated);
 
-        return redirect()->route('teacher.index')->with('success', 'Teacher created successfully.');
+        return redirect()
+            ->route('teacher.index')
+            ->with('success', 'Guru berhasil ditambahkan.');
     }
 
+    /**
+     * Show the form for editing the specified teacher.
+     */
     public function edit(Teacher $teacher)
     {
         return view('back.teacher.edit', compact('teacher'));
     }
 
+    /**
+     * Update the specified teacher in storage.
+     */
     public function update(Request $request, Teacher $teacher)
     {
         $validated = $request->validate([
-            'photo'     => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
-            'name'      => 'required|string|max:255',
-            'subject'   => 'required|string|max:255',
-            'instagram' => 'required|string|max:255|unique:teachers,instagram,' . $teacher->id,
-            'facebook'  => 'required|string|max:255|unique:teachers,facebook,' . $teacher->id,
-            'twitter'   => 'required|string|max:255|unique:teachers,twitter,' . $teacher->id,
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'name' => 'required|string|max:255',
+            'subject' => 'required|string|max:255',
+            'instagram' => 'nullable|string|max:255',
+            'facebook' => 'nullable|string|max:255',
+            'twitter' => 'nullable|string|max:255',
         ]);
 
+        // Handle photo upload with compression (replace old file)
         if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('teachers', 'public');
-            $teacher->photo = $path;
+            $validated['photo'] = $this->fileUploadService->replace(
+                $request->file('photo'),
+                $teacher->photo,
+                'teachers'
+            );
         }
 
-        $teacher->name = $validated['name'];
-        $teacher->subject = $validated['subject'];
-        $teacher->instagram = $validated['instagram'];
-        $teacher->facebook = $validated['facebook'];
-        $teacher->twitter = $validated['twitter'];
-        $teacher->save();
+        $teacher->update($validated);
 
-        return redirect()->route('teacher.index')->with('success', 'Teacher updated successfully.');
+        return redirect()
+            ->route('teacher.index')
+            ->with('success', 'Guru berhasil diperbarui.');
     }
 
+    /**
+     * Remove the specified teacher from storage.
+     */
     public function destroy(Teacher $teacher)
     {
+        // Delete the photo file
+        $this->fileUploadService->delete($teacher->photo);
+
         $teacher->delete();
-        return redirect()->route('teacher.index')->with('success', 'Teacher deleted successfully.');
+
+        return redirect()
+            ->route('teacher.index')
+            ->with('success', 'Guru berhasil dihapus.');
     }
 }

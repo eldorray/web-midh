@@ -2,91 +2,75 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StorePpdbRequest;
+use App\Http\Requests\UpdatePpdbRequest;
 use App\Models\PpdbRegistration;
-use Illuminate\Support\Facades\Storage;
-use App\Exports\PpdbRegistrationExport;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Services\FileUploadService;
+use App\Enums\RegistrationStatus;
+use Illuminate\Http\Request;
 
 class PpdbRegistrationController extends Controller
 {
-    // Public Pages
-    public function index()
+    protected FileUploadService $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
     {
-        $registrations = PpdbRegistration::all();
-        return view('front.ppdb.index', compact('registrations'));
+        $this->fileUploadService = $fileUploadService;
     }
 
+    /**
+     * Display the PPDB landing page with status check.
+     */
+    public function index()
+    {
+        return view('front.ppdb.index');
+    }
+
+    /**
+     * Show the form for editing existing registration (front-end).
+     */
     public function editFront($id)
     {
         $registration = PpdbRegistration::findOrFail($id);
         return view('front.ppdb.edit', compact('registration'));
     }
 
-    public function updateFront(Request $request, $id)
+    /**
+     * Update the registration from front-end.
+     */
+    public function updateFront(UpdatePpdbRequest $request, $id)
     {
         $registration = PpdbRegistration::findOrFail($id);
+        $validated = $request->validated();
 
-        $validated = $request->validate([
-            'nama_lengkap'      => 'required|string|max:255',
-            'nik'               => 'required|string|unique:ppdb_registrations,nik,' . $id . '|size:16',
-            'nisn'              => 'nullable|string|size:10|unique:ppdb_registrations,nisn,' . $id,
-            'tempat_lahir'      => 'required|string|max:255',
-            'tanggal_lahir'     => 'required|date|before:today',
-            'jenis_kelamin'     => 'required|in:Laki-laki,Perempuan',
-            'agama'             => 'required|in:Islam',
-            'asal_sekolah'      => 'nullable|string|max:255',
-            'alamat_lengkap'    => 'required|string',
-            'anak_ke'           => 'required|integer|min:1',
-            'status_keluarga'   => 'required|in:Anak kandung,Anak angkat',
-            'kewarganegaraan'   => 'required|string|max:255',
+        // Handle file uploads with compression
+        $fileFields = ['akta_kelahiran', 'kartu_keluarga', 'foto', 'ijazah'];
 
-            'nama_ayah'         => 'required|string|max:255',
-            'nik_ayah'          => 'required|string|size:16',
-            'pendidikan_ayah'   => 'required|string|max:255',
-            'pekerjaan_ayah'    => 'required|string|max:255',
-            'penghasilan_ayah'  => 'required|string|max:255',
-
-            'nama_ibu'         => 'required|string|max:255',
-            'nik_ibu'          => 'required|string|size:16',
-            'pendidikan_ibu'   => 'required|string|max:255',
-            'pekerjaan_ibu'    => 'required|string|max:255',
-            'penghasilan_ibu'  => 'required|string|max:255',
-
-            'nomor_telepon'    => 'required|string|min:10|max:15',
-            'alamat_orang_tua' => 'nullable|string',
-
-            'akta_kelahiran'   => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'kartu_keluarga'   => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-        ]);
-
-        // Handle file upload untuk akta kelahiran
-        if ($request->hasFile('akta_kelahiran')) {
-            // Hapus file lama jika ada
-            if (Storage::disk('public')->exists($registration->akta_kelahiran)) {
-            Storage::disk('public')->delete($registration->akta_kelahiran);
+        foreach ($fileFields as $field) {
+            if ($request->hasFile($field)) {
+                $folder = 'ppdb/' . str_replace('_', '-', $field);
+                $validated[$field] = $this->fileUploadService->replace(
+                    $request->file($field),
+                    $registration->$field,
+                    $folder
+                );
             }
-            $validated['akta_kelahiran'] = $request->file('akta_kelahiran')->store('ppdb/akta', 'public');
         }
 
-        // Handle file upload untuk kartu keluarga
-        if ($request->hasFile('kartu_keluarga')) {
-            // Hapus file lama jika ada
-            if (Storage::disk('public')->exists($registration->kartu_keluarga)) {
-            Storage::disk('public')->delete($registration->kartu_keluarga);
-            }
-            $validated['kartu_keluarga'] = $request->file('kartu_keluarga')->store('ppdb/kk', 'public');
-        }
-
-        // Set status menjadi pending setelah update
-        $validated['status'] = 'pending';
+        // Reset status to pending after update
+        $validated['status'] = RegistrationStatus::PENDING->value;
         $validated['catatan_admin'] = null;
 
         $registration->update($validated);
 
-        return redirect()->route('ppdb.index')->with('success', 'Data pendaftaran berhasil diperbarui dan menunggu verifikasi kembali');
+        return redirect()
+            ->route('ppdb.index')
+            ->with('success', 'Data pendaftaran berhasil diperbarui dan menunggu verifikasi kembali.');
     }
 
+    /**
+     * Check registration status by NIK or NISN.
+     */
     public function checkRegistration(Request $request)
     {
         $request->validate([
@@ -95,11 +79,15 @@ class PpdbRegistrationController extends Controller
 
         $searchValue = $request->input('search_value');
 
-        // Sanitize input - hanya izinkan angka
+        // Sanitize input - only allow numbers
         $searchValue = preg_replace('/[^0-9]/', '', $searchValue);
 
         if (empty($searchValue)) {
-            return response()->json(['found' => false]);
+            return response()->json([
+                'success' => false,
+                'found' => false,
+                'message' => 'Masukkan NIK atau NISN yang valid.'
+            ]);
         }
 
         $registration = PpdbRegistration::where('nik', $searchValue)
@@ -108,218 +96,76 @@ class PpdbRegistrationController extends Controller
 
         if ($registration) {
             return response()->json([
+                'success' => true,
                 'found' => true,
                 'data' => [
                     'id' => $registration->id,
                     'nama_lengkap' => $registration->nama_lengkap,
                     'status' => $registration->getStatusLabel(),
                     'status_value' => $registration->status,
+                    'catatan_admin' => $registration->catatan_admin,
                     'created_at' => $registration->created_at->format('d-m-Y H:i'),
                 ]
             ]);
         }
 
-        return response()->json(['found' => false]);
+        return response()->json([
+            'success' => true,
+            'found' => false,
+            'message' => 'Data tidak ditemukan.'
+        ]);
     }
 
+    /**
+     * Show the registration form.
+     */
     public function create()
     {
-        return view('front.ppdb.form');
+        $religions = config('school.religions', ['Islam']);
+        $schoolLevels = config('school.levels', []);
+
+        return view('front.ppdb.form', compact('religions', 'schoolLevels'));
     }
 
-    public function store(Request $request)
+    /**
+     * Store a new registration.
+     */
+    public function store(StorePpdbRequest $request)
     {
-        $validated = $request->validate([
-            // Student Data
-            'nama_lengkap' => 'required|string|max:255',
-            'nik' => 'required|string|unique:ppdb_registrations,nik|size:16',
-            'nisn' => 'nullable|string|size:10|unique:ppdb_registrations,nisn',
-            'tempat_lahir' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date|before:today',
-            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'agama' => 'required|in:Islam',
-            'asal_sekolah' => 'nullable|string|max:255',
-            'alamat_lengkap' => 'required|string',
-            'anak_ke' => 'required|integer|min:1',
-            'status_keluarga' => 'required|in:Anak kandung,Anak angkat',
-            'kewarganegaraan' => 'required|string|max:255',
+        $validated = $request->validated();
 
-            // Father Data
-            'nama_ayah' => 'required|string|max:255',
-            'nik_ayah' => 'required|string|size:16',
-            'pendidikan_ayah' => 'required|string|max:255',
-            'pekerjaan_ayah' => 'required|string|max:255',
-            'penghasilan_ayah' => 'required|string|max:255',
+        // Handle file uploads with compression
+        $fileFields = [
+            'akta_kelahiran' => 'ppdb/akta',
+            'kartu_keluarga' => 'ppdb/kk',
+            'foto' => 'ppdb/foto',
+            'ijazah' => 'ppdb/ijazah',
+        ];
 
-            // Mother Data
-            'nama_ibu' => 'required|string|max:255',
-            'nik_ibu' => 'required|string|size:16',
-            'pendidikan_ibu' => 'required|string|max:255',
-            'pekerjaan_ibu' => 'required|string|max:255',
-            'penghasilan_ibu' => 'required|string|max:255',
+        foreach ($fileFields as $field => $folder) {
+            if ($request->hasFile($field)) {
+                $validated[$field] = $this->fileUploadService->upload(
+                    $request->file($field),
+                    $folder
+                );
+            }
+        }
 
-            // Contact
-            'nomor_telepon' => 'required|string|min:10|max:15',
-            'alamat_orang_tua' => 'nullable|string',
-
-            // Files
-            'akta_kelahiran' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'kartu_keluarga' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
-        ], [
-            'nik.unique' => 'NIK sudah terdaftar sebelumnya',
-            'nisn.unique' => 'NISN sudah terdaftar sebelumnya',
-            'nik.size' => 'NIK harus 16 digit',
-            'nik_ayah.size' => 'NIK Ayah harus 16 digit',
-            'nik_ibu.size' => 'NIK Ibu harus 16 digit',
-            'nisn.size' => 'NISN harus 10 digit',
-            'nomor_telepon.min' => 'Nomor telepon minimal 10 digit',
-            'nomor_telepon.max' => 'Nomor telepon maksimal 15 digit',
-            'akta_kelahiran.required' => 'Scan akta kelahiran harus diunggah',
-            'kartu_keluarga.required' => 'Scan kartu keluarga harus diunggah',
-        ]);
-
-        // Upload files
-        $aktaPath = $request->file('akta_kelahiran')->store('ppdb/akta', 'public');
-        $kkPath = $request->file('kartu_keluarga')->store('ppdb/kk', 'public');
-
-        $validated['akta_kelahiran'] = $aktaPath;
-        $validated['kartu_keluarga'] = $kkPath;
+        // Set default status
+        $validated['status'] = RegistrationStatus::PENDING->value;
 
         PpdbRegistration::create($validated);
 
-        return redirect()->route('ppdb.success')->with('success', 'Pendaftaran berhasil! Silahkan tunggu verifikasi dari pihak sekolah.');
+        return redirect()
+            ->route('ppdb.success')
+            ->with('success', 'Pendaftaran berhasil! Silahkan tunggu verifikasi dari pihak sekolah.');
     }
 
+    /**
+     * Show success page after registration.
+     */
     public function success()
     {
         return view('front.ppdb.success');
-    }
-
-    // Admin Pages
-    public function adminIndex()
-    {
-        $registrations = PpdbRegistration::orderBy('created_at', 'desc')->paginate(15);
-        return view('back.ppdb.index', compact('registrations'));
-    }
-
-    public function adminShow($id)
-    {
-        $registration = PpdbRegistration::findOrFail($id);
-        return view('back.ppdb.show', compact('registration'));
-    }
-
-    public function adminEdit($id)
-    {
-        $registration = PpdbRegistration::findOrFail($id);
-        return view('back.ppdb.edit', compact('registration'));
-    }
-
-    public function adminUpdate(Request $request, $id)
-    {
-        $registration = PpdbRegistration::findOrFail($id);
-
-        $validated = $request->validate([
-            'nama_lengkap' => 'required|string|max:255',
-            'nik' => 'required|string|unique:ppdb_registrations,nik,' . $id . '|size:16',
-            'nisn' => 'nullable|string|size:10|unique:ppdb_registrations,nisn,' . $id,
-            'tempat_lahir' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date|before:today',
-            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'agama' => 'required|in:Islam',
-            'asal_sekolah' => 'nullable|string|max:255',
-            'alamat_lengkap' => 'required|string',
-            'anak_ke' => 'required|integer|min:1',
-            'status_keluarga' => 'required|in:Anak kandung,Anak angkat',
-            'kewarganegaraan' => 'required|string|max:255',
-
-            'nama_ayah' => 'required|string|max:255',
-            'nik_ayah' => 'required|string|size:16',
-            'pendidikan_ayah' => 'required|string|max:255',
-            'pekerjaan_ayah' => 'required|string|max:255',
-            'penghasilan_ayah' => 'required|string|max:255',
-
-            'nama_ibu' => 'required|string|max:255',
-            'nik_ibu' => 'required|string|size:16',
-            'pendidikan_ibu' => 'required|string|max:255',
-            'pekerjaan_ibu' => 'required|string|max:255',
-            'penghasilan_ibu' => 'required|string|max:255',
-
-            'nomor_telepon' => 'required|string|min:10|max:15',
-            'alamat_orang_tua' => 'nullable|string',
-
-            'akta_kelahiran' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'kartu_keluarga' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-        ]);
-
-        // Handle file upload untuk akta kelahiran
-        if ($request->hasFile('akta_kelahiran')) {
-            // Hapus file lama jika ada
-            if (Storage::disk('public')->exists($registration->akta_kelahiran)) {
-            Storage::disk('public')->delete($registration->akta_kelahiran);
-            }
-            $validated['akta_kelahiran'] = $request->file('akta_kelahiran')->store('ppdb/akta', 'public');
-        }
-
-        // Handle file upload untuk kartu keluarga
-        if ($request->hasFile('kartu_keluarga')) {
-            // Hapus file lama jika ada
-            if (Storage::disk('public')->exists($registration->kartu_keluarga)) {
-            Storage::disk('public')->delete($registration->kartu_keluarga);
-            }
-            $validated['kartu_keluarga'] = $request->file('kartu_keluarga')->store('ppdb/kk', 'public');
-        }
-
-        // Set status menjadi pending setelah update
-        $validated['status'] = 'pending';
-        $validated['catatan_admin'] = null;
-
-        $registration->update($validated);
-
-        return redirect()->route('ppdb.admin.index')->with('success', 'Data pendaftaran berhasil diperbarui dan menunggu verifikasi kembali');
-    }
-
-    public function approve($id)
-    {
-        $registration = PpdbRegistration::findOrFail($id);
-        $registration->update(['status' => 'approved']);
-
-        return back()->with('success', 'Pendaftaran diterima');
-    }
-
-    public function reject(Request $request, $id)
-    {
-        $request->validate([
-            'catatan_admin' => 'required|string|min:10'
-        ]);
-
-        $registration = PpdbRegistration::findOrFail($id);
-        $registration->update([
-            'status' => 'rejected',
-            'catatan_admin' => $request->input('catatan_admin')
-        ]);
-
-        return back()->with('success', 'Pendaftaran ditolak');
-    }
-
-    public function destroy($id)
-    {
-        $registration = PpdbRegistration::findOrFail($id);
-
-        // Delete uploaded files
-        if (Storage::disk('public')->exists($registration->akta_kelahiran)) {
-            Storage::disk('public')->delete($registration->akta_kelahiran);
-        }
-        if (Storage::disk('public')->exists($registration->kartu_keluarga)) {
-            Storage::disk('public')->delete($registration->kartu_keluarga);
-        }
-
-        $registration->delete();
-
-        return redirect()->route('ppdb.admin.index')->with('success', 'Data berhasil dihapus');
-    }
-
-    public function export()
-    {
-        return Excel::download(new PpdbRegistrationExport, 'ppdb-registrations-' . date('Y-m-d') . '.xlsx');
     }
 }

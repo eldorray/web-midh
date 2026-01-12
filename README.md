@@ -1,37 +1,49 @@
-# MI Darul Huffazh Web System (Web MIDH)
+# Web Sekolah Universal (Web MIDH)
 
-System Informasi Manajemen Sekolah / RDM Hub yang dikembangkan untuk MI Darul Huffazh. Aplikasi ini mencakup manajemen akademik, kepegawaian, perpustakaan, dan sarana prasarana.
+Sistem Informasi Manajemen Sekolah / RDM Hub universal yang dapat digunakan untuk berbagai jenjang pendidikan (SD, SMP, SMA, MI, MTs, MA, SMK, TK, RA). Aplikasi ini dikembangkan dengan arsitektur yang bersih dan dapat dikonfigurasi sesuai kebutuhan sekolah.
 
 ## 🚀 Fitur Utama
 
--   **Manajemen Pengguna**: Sistem autentikasi dan otorisasi untuk Admin, Guru, dan Staff.
--   **Akademik**: Pengelolaan data siswa, rapor, dan nilai.
--   **Kepegawaian (HR)**:
-    -   Manajemen Guru dan Staff.
-    -   Payroll & Laporan Gaji (Tahfidz).
-    -   Absensi & Cuti.
--   **Perpustakaan**: Manajemen koleksi buku, anggota, dan sirkulasi peminjaman.
--   **Sarana Prasarana (E-Sarpras)**: Manajemen inventaris sekolah.
--   **Fitur Utilitas**:
-    -   Import Data User via Excel.
-    -   Generasi Laporan PDF.
+### Manajemen Konten
+
+-   **Hero Banner**: Kelola banner halaman utama dengan dukungan gambar dan teks dinamis
+-   **Blog & Berita**: Sistem blog lengkap dengan rich text editor, tags, dan kategori
+-   **Profil Guru**: Tampilkan profil guru/pengajar dengan foto dan sosial media
+-   **Visi Misi**: Halaman visi, misi, tujuan, dan sejarah sekolah
+
+### PPDB Online (Penerimaan Peserta Didik Baru)
+
+-   **Form Pendaftaran**: Form komprehensif dengan validasi data lengkap
+-   **Cek Status**: Pendaftar dapat mengecek status pendaftaran via NIK/NISN
+-   **Admin Dashboard**: Kelola pendaftar, approve/reject, dengan catatan admin
+-   **Export Excel**: Download data pendaftar ke Excel
+-   **Multi Jenjang**: Mendukung pendaftaran untuk berbagai jenjang pendidikan
+
+### Pengaturan Sekolah
+
+-   **Konfigurasi Dinamis**: Nama sekolah, jenjang, alamat, kontak, logo
+-   **Identitas Sekolah**: NPSN, NSS, akreditasi, kepala sekolah
+-   **PPDB Settings**: Buka/tutup pendaftaran, periode, persyaratan
+-   **Sosial Media**: Integrasi dengan Facebook, Instagram, YouTube, dll
+
+### Fitur Teknis
+
+-   **Image Compression**: Otomatis kompres gambar ke format WebP (hemat storage ~80%)
+-   **Soft Deletes**: Data penting tidak hilang saat dihapus
+-   **Admin Middleware**: Proteksi route admin dengan otorisasi
+-   **Clean Architecture**: Form Requests, Services, Enums untuk kode yang bersih
 
 ## 📋 Persyaratan Sistem
-
-Pastikan sistem Anda memenuhi persyaratan berikut sebelum memulai:
 
 -   **PHP**: ^8.2
 -   **Composer**: Terinstal
 -   **Node.js & NPM**: Terinstal
--   **Database**: MySQL / MariaDB
+-   **Database**: MySQL / MariaDB / SQLite
+-   **GD Library atau Imagick**: Untuk kompresi gambar
 
-## 🛠 Panduan Instalasi (Clone)
-
-Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di komputer lokal:
+## 🛠 Panduan Instalasi
 
 ### 1. Clone Repository
-
-Unduh source code dari GitHub:
 
 ```bash
 git clone https://github.com/eldorray/web-midh.git
@@ -40,8 +52,6 @@ cd web-midh
 
 ### 2. Install Dependensi
 
-Install library PHP (via Composer) dan JavaScript (via NPM):
-
 ```bash
 composer install
 npm install
@@ -49,13 +59,11 @@ npm install
 
 ### 3. Konfigurasi Environment
 
-Salin file konfigurasi `.env.example` menjadi `.env`:
-
 ```bash
 cp .env.example .env
 ```
 
-Buka file `.env` dengan text editor Anda dan sesuaikan konfigurasi database:
+Edit file `.env` dan sesuaikan konfigurasi database:
 
 ```ini
 DB_CONNECTION=mysql
@@ -68,8 +76,6 @@ DB_PASSWORD=
 
 ### 4. Generate Key & Link Storage
 
-Generate application key Laravel dan buat symbolic link untuk storage:
-
 ```bash
 php artisan key:generate
 php artisan storage:link
@@ -77,30 +83,145 @@ php artisan storage:link
 
 ### 5. Setup Database
 
-Jalankan migrasi database. Gunakan flag `--seed` jika Anda ingin mengisi database dengan data awal (seeder):
-
 ```bash
 php artisan migrate --seed
 ```
 
 ### 6. Build Aset Frontend
 
-Kompilasi aset CSS dan JS menggunakan Vite:
-
 ```bash
 npm run build
 ```
 
-## 💻 Cara Menjalankan Aplikasi
+## 💻 Cara Menjalankan
 
-Untuk lingkungan pengembangan (development), Anda bisa menggunakan command berikut:
+### Development
 
 ```bash
 php artisan serve
 ```
 
-Akses aplikasi melalui browser di [http://localhost:8000](http://localhost:8000).
+Akses aplikasi di [http://localhost:8000](http://localhost:8000)
+
+### Dengan Vite Dev Server (Hot Reload)
+
+```bash
+# Terminal 1
+php artisan serve
+
+# Terminal 2
+npm run dev
+```
+
+## 👤 Akun Default
+
+Setelah menjalankan seeder, akun admin default:
+
+-   **Email**: admin@sekolah.test
+-   **Password**: password
+
+> ⚠️ **Penting**: Segera ubah password setelah login pertama!
+
+## 🏫 Konfigurasi Jenjang Sekolah
+
+Aplikasi mendukung jenjang berikut (dapat dikonfigurasi di `config/school.php`):
+
+| Kode | Jenjang                         |
+| ---- | ------------------------------- |
+| sd   | Sekolah Dasar (SD)              |
+| smp  | Sekolah Menengah Pertama (SMP)  |
+| sma  | Sekolah Menengah Atas (SMA)     |
+| smk  | Sekolah Menengah Kejuruan (SMK) |
+| mi   | Madrasah Ibtidaiyah (MI)        |
+| mts  | Madrasah Tsanawiyah (MTs)       |
+| ma   | Madrasah Aliyah (MA)            |
+| tk   | Taman Kanak-Kanak (TK)          |
+| ra   | Raudhatul Athfal (RA)           |
+
+## 📁 Struktur Proyek
+
+```
+app/
+├── Enums/                 # Enum classes (RegistrationStatus)
+├── Exports/               # Excel export classes
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/         # Admin controllers (PpdbController, SchoolSettingController)
+│   │   └── ...            # Public controllers
+│   ├── Middleware/        # AdminMiddleware
+│   └── Requests/          # Form Request validation
+├── Models/                # Eloquent models
+└── Services/              # Service classes (FileUploadService)
+
+config/
+└── school.php             # School configuration (levels, religions, etc.)
+
+database/
+├── factories/             # Model factories for testing
+└── migrations/            # Database migrations
+```
+
+## 🧪 Testing
+
+Jalankan test suite:
+
+```bash
+php artisan test
+```
+
+Jalankan test tertentu:
+
+```bash
+php artisan test --filter=PpdbTest
+php artisan test --filter=BlogTest
+```
+
+## 📝 API Endpoints
+
+### Public
+
+| Method | Endpoint       | Deskripsi              |
+| ------ | -------------- | ---------------------- |
+| GET    | `/ppdb`        | Halaman PPDB           |
+| POST   | `/ppdb/check`  | Cek status pendaftaran |
+| GET    | `/ppdb/daftar` | Form pendaftaran       |
+| POST   | `/ppdb/daftar` | Submit pendaftaran     |
+
+### Admin (Requires Authentication + is_admin)
+
+| Method | Endpoint                   | Deskripsi          |
+| ------ | -------------------------- | ------------------ |
+| GET    | `/admin/ppdb`              | List pendaftar     |
+| POST   | `/admin/ppdb/{id}/approve` | Terima pendaftar   |
+| POST   | `/admin/ppdb/{id}/reject`  | Tolak pendaftar    |
+| GET    | `/admin/settings`          | Pengaturan sekolah |
+
+## 🔧 Fitur Image Compression
+
+Semua upload gambar otomatis dikompres menggunakan Intervention Image:
+
+-   Format output: **WebP**
+-   Kualitas default: **80%**
+-   Max width: **1920px** (menjaga aspect ratio)
+
+Konfigurasi dapat diubah di `config/school.php`:
+
+```php
+'image' => [
+    'quality' => 80,
+    'max_width' => 1920,
+    'format' => 'webp',
+],
+```
+
+## 🚀 Deployment
+
+Lihat [DEPLOYMENT.md](DEPLOYMENT.md) untuk panduan deployment ke production.
+
+## 📄 License
+
+MIT License - Silakan gunakan dan modifikasi sesuai kebutuhan.
 
 ---
 
-**Catatan**: Jika Anda menggunakan **Laravel Herd** atau **Valet**, Anda cukup membuka folder proyek di browser sesuai dengan domain `project.test` yang dikonfigurasi.
+**Dibuat dengan ❤️ untuk pendidikan Indonesia**
