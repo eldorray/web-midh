@@ -1,4 +1,3 @@
-# MI Darul Huffazh Web System (Web MIDH)
 
 System Informasi Manajemen Sekolah / RDM Hub yang dikembangkan untuk MI Darul Huffazh. Aplikasi ini mencakup manajemen akademik, kepegawaian, perpustakaan, dan sarana prasarana.
 
